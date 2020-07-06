@@ -1,5 +1,5 @@
 //Always selecting the last element as pivot
-export  default function getQuickSortAnimations(array) {
+export default function getQuickSortAnimations(array) {
   const animations = [];
   let start = 0;
   let end = array.length - 1;
