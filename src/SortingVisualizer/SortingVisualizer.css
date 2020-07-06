@@ -1,0 +1,21 @@
+.array-container {
+    position: absolute;
+    left: 100px;
+    right: 100px;
+    top: 100px;
+  }
+  
+  .array-bar {
+    background-color: turquoise;
+    width: 2px;
+    display: inline-block;
+    margin: 1px 1px 10px 2px;
+  }
+  .btn{
+    margin: 0px 8px;
+    padding: 10px;
+    color: black;
+    font-size: 15px;
+    font-weight: bolder;
+  }
+  
