@@ -11,14 +11,15 @@ import  getInsertionSortAnimations from  "../SortingAlgorithms/InsertionSort.js"
 import getSelectionSortAnimations from "../SortingAlgorithms/SelectionSort.js"
 import getQuickSortAnimations from "../SortingAlgorithms/QuickSort.js"
 //const ANIMATION_SPEED_MS = 1;
-const NUMBER_OF_ARRAY_BARS =200;
+//const NUMBER_OF_ARRAY_BARS =200;
 
 export default class SortingVisualizer extends React.Component{
     constructor(){
         super()
         this.state = {
             array:[],
-            ANIMATION_SPEED_MS:1
+            ANIMATION_SPEED_MS:1,
+            NUMBER_OF_ARRAY_BARS:150
         }
     }
     componentDidMount(){
@@ -29,13 +30,45 @@ export default class SortingVisualizer extends React.Component{
         ANIMATION_SPEED_MS:newSpeed
       })
     }
+    updateNumberOfBars(num){
+      this.setState({
+        NUMBER_OF_ARRAY_BARS: num
+      })
+      this.resetArray(num);
+    }
     resetArray(){
          const array = []
-          for(let i =0;i<NUMBER_OF_ARRAY_BARS;i++){
+          for(let i =0;i<this.state.NUMBER_OF_ARRAY_BARS;i++){
               array.push(randomIntFromInterval(100,480))
           }
         this.setState({array})
+        this.enableButtons();
     }
+
+    disableButtons(){
+      const item=document.getElementsByClassName("listItem");
+      for(let i=0;i<item.length;i++){
+        console.log("here")
+        item[i].style.pointerEvents = 'none'; 
+        item[i].style.color='red'; 
+        item[i].innerHTML = "Disabled";   
+      }
+      //const span=document.getElementsByClassName("listItem");    
+      //item.style.color='white';
+    }
+  
+    
+    enableButtons(){
+      const item=document.getElementsByClassName("listItem");
+      for(let i=0;i<item.length;i++){
+        item[i].style.pointerEvents = 'auto'; 
+        item[i].style.color='black';  
+        item[i].innerHTML = item[i].value;    
+      }
+      //const span=document.getElementsByClassName("listItem");    
+      //item.style.color='black';
+    }
+  
     AnimationLogic(animations){
       for (let i = 0; i < animations.length; i++) {
         const arrayBars = document.getElementsByClassName('array-bar');
@@ -56,9 +89,11 @@ export default class SortingVisualizer extends React.Component{
           }, i * this.state.ANIMATION_SPEED_MS);
         }
       }
+      //this.enableButtons();
   }    
     Algorithms(sortAlgo){
       this.resetArray()
+      this.disableButtons();
       let animations = []
       if(sortAlgo==='bubbleSort'){
          animations = getBubbleSortAnimations(this.state.array);
@@ -73,6 +108,10 @@ export default class SortingVisualizer extends React.Component{
       }
       this.AnimationLogic(animations)
     }
+    // Exit(){
+    //   return;
+    //   //this.resetArray();
+    // }
     render() {
         const {array} = this.state
         return(
@@ -91,23 +130,24 @@ export default class SortingVisualizer extends React.Component{
                 </div>
             ))}
             <div>
-            <button className="btn" onClick={() => this.resetArray()}>Create New Array</button>
-            <button className="btn" onClick={() => this.Algorithms('mergeSort')}>MERGE SORT</button>
-            <button className="btn" onClick={() => this.Algorithms('insertionSort')}>INSERTION SORT</button>
-            <button className="btn" onClick={() => this.Algorithms('quickSort')}>QUICK SORT</button>
-            <button className="btn" onClick={() => this.Algorithms('selectionSort')}>SELECTION SORT</button>
-            <button className="btn" onClick={() => this.Algorithms('bubbleSort')}>BUBBLE SORT</button>
+            <button   className="btn listItem" onClick={() => this.resetArray() }value="Create New Array">Create New Array</button>
+            <button className="  btn listItem" onClick={() => this.Algorithms('mergeSort')} value="MERGE SORT">MERGE SORT</button>
+            <button className="btn  listItem" onClick={() => this.Algorithms('insertionSort')} value="INSERTION SORT">INSERTION SORT</button>
+            <button className="btn listItem" onClick={() => this.Algorithms('quickSort')} value="QUICK SORT">QUICK SORT</button>
+            <button className="btn listItem" onClick={() => this.Algorithms('selectionSort')} value="SELECTION SORT">SELECTION SORT</button>
+            <button className="btn listItem" onClick={() => this.Algorithms('bubbleSort')} value="BUBBLE SORT">BUBBLE SORT</button>
+            {<button className="btn" onClick={() => this.enableButtons()}>Enable Buttons</button> }
             {/* <button className="btn" onClick={() => this.testSortingAlgorithms()}> Test Sorting Algorithms </button> */}
             </div>
             <div>
             <Slider
                         className = "sliderr"
                          //value={typeof numItems === 'number' ? numItems : 0}
-                        onChange={(e, newValue) => this.resetArray(newValue)}
+                        onChange={(e, newValue) => this.updateNumberOfBars(newValue)}
                         aria-labelledby="input-slider"
                         valueLabelDisplay="auto"
-                        min={10}
-                        max={50}
+                        min={150}
+                        max={229}
                 />  
                 <Slider
                         className = "sliderr"
