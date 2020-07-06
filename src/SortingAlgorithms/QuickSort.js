@@ -1,58 +1,46 @@
-//import React from "react"
-
-function swap(Animations,items, leftIndex, rightIndex) {
-  var temp = items[leftIndex];
-  items[leftIndex] = items[rightIndex];
-  items[rightIndex] = temp;
-  Animations.push([leftIndex,items[leftIndex]]);
-  Animations.push([rightIndex,items[rightIndex]]);
+//Always selecting the last element as pivot
+export  default function getQuickSortAnimations(array) {
+  const animations = [];
+  let start = 0;
+  let end = array.length - 1;
+  quickSort(array, start, end, animations);
+  return animations;
 }
 
-function partition(Animations,items, left, right) {
-  var pivot = items[Math.floor((right + left) / 2)], //middle element
-   index2 = Math.floor((right + left) / 2),
-    i = left, //left pointer
-    j = right; //right pointer
-  while (i <= j) {
-    while (items[i] < pivot) {
-        Animations.push([i,index2,'red']);
-        Animations.push([i,index2,'turquoise']);
-      i++;
-    }
-    while (items[j] > pivot) {
-        Animations.push([i,index2,'red']);
-        Animations.push([i,index2,'turquoise']);
-      j--;
-    }
-    if (i <= j) {
-      swap(Animations,items, i, j); //sawpping two elements
-      i++;
-      j--;
-    }
+function quickSort(array, start, end, animations) {
+  if (start >= end) {
+    return;
   }
-  return i;
+  let pivotIdx = partition(array, start, end, animations);
+  quickSort(array, start, pivotIdx - 1, animations);
+  quickSort(array, pivotIdx + 1, end, animations);
 }
 
-function quickSort( Animations,items, left, right) {
-    var index;
-    if (items.length > 1) {
-      index = partition(Animations,items, left, right); //index returned from partition
-      if (left < index - 1) {
-        //more elements on the left side of the pivot
-        quickSort(Animations,items, left, index - 1);
-      }
-      if (index < right) {
-        //more elements on the right side of the pivot
-        quickSort(Animations,items, index, right);
-      }
+function partition(array, start, end, animations) {
+  let pivotValue = array[end];
+  let currentSmaller = start - 1;
+  while (start < end) {
+    animations.push([start, end,'red']);
+    animations.push([start, end,'turquoise']);
+    if (array[start] <= pivotValue) {
+      currentSmaller += 1;
+      animations.push([start, array[currentSmaller]]);
+      animations.push([currentSmaller, array[start]]);
+      let tempx = array[currentSmaller];
+      array[currentSmaller] = array[start];
+      array[start] = tempx;
+    } else {
+      animations.push([0, array[0]]);
+      animations.push([0, array[0]]);
     }
-    return items;
+    start += 1;
   }
-  
-  export default function getQuickSortAnimations(items){
-    const Animations = []
-    var sortedArray = quickSort(Animations,items, 0, items.length - 1);
-    console.log(sortedArray); //prints [2,3,5,6,7,9]
-    return Animations  
-  }
-  
+  animations.push([end, currentSmaller + 1,'red']);
+  animations.push([end, currentSmaller + 1,'turquoise']);
+  animations.push([end, array[currentSmaller + 1]]);
+  animations.push([currentSmaller + 1, array[end]]);
+  let temp = array[currentSmaller + 1];
+  array[currentSmaller + 1] = pivotValue;
+  array[end] = temp;
+  return currentSmaller + 1;
+}
