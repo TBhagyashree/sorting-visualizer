@@ -10,8 +10,6 @@ import  getBubbleSortAnimations from  "../SortingAlgorithms/BubbleSort.js"
 import  getInsertionSortAnimations from  "../SortingAlgorithms/InsertionSort.js"
 import getSelectionSortAnimations from "../SortingAlgorithms/SelectionSort.js"
 import getQuickSortAnimations from "../SortingAlgorithms/QuickSort.js"
-//const ANIMATION_SPEED_MS = 1;
-//const NUMBER_OF_ARRAY_BARS =200;
 
 export default class SortingVisualizer extends React.Component{
     constructor(){
@@ -19,7 +17,7 @@ export default class SortingVisualizer extends React.Component{
         this.state = {
             array:[],
             ANIMATION_SPEED_MS:1,
-            NUMBER_OF_ARRAY_BARS:150
+            NUMBER_OF_ARRAY_BARS:199
         }
     }
     componentDidMount(){
@@ -27,31 +25,33 @@ export default class SortingVisualizer extends React.Component{
     }
     adjustSpeed(newSpeed){
       this.setState({
+        ...this.state,
         ANIMATION_SPEED_MS:newSpeed
       })
     }
-    updateNumberOfBars(num){
-      this.setState({
-        NUMBER_OF_ARRAY_BARS: num
-      })
-      this.resetArray(num);
-    }
+    // updateNumberOfBars(num){
+    //   this.setState({
+    //     ...this.state ,NUMBER_OF_ARRAY_BARS: num
+    //   })
+    //   this.resetArray(this.state.NUMBER_OF_ARRAY_BARS);
+    // }
     resetArray(){
          const array = []
           for(let i =0;i<this.state.NUMBER_OF_ARRAY_BARS;i++){
               array.push(randomIntFromInterval(100,480))
           }
-        this.setState({array})
+        this.setState({ ...this.state,array})
         this.enableButtons();
     }
 
     disableButtons(){
       const item=document.getElementsByClassName("listItem");
+      document.getElementsByClassName("test").disabled = true;
       for(let i=0;i<item.length;i++){
         console.log("here")
         item[i].style.pointerEvents = 'none'; 
-        item[i].style.color='red'; 
-        item[i].innerHTML = "Disabled";   
+        item[i].style.color='lightcoral'; 
+        item[i].innerHTML = item[i].value.strike();   
       }
       //const span=document.getElementsByClassName("listItem");    
       //item.style.color='white';
@@ -60,6 +60,7 @@ export default class SortingVisualizer extends React.Component{
     
     enableButtons(){
       const item=document.getElementsByClassName("listItem");
+      document.getElementsByClassName("test").disabled = false;
       for(let i=0;i<item.length;i++){
         item[i].style.pointerEvents = 'auto'; 
         item[i].style.color='black';  
@@ -117,17 +118,18 @@ export default class SortingVisualizer extends React.Component{
         return(
           <React.Fragment>
             <CssBaseline/>
-            <Container maxWidth="lg" style={{height: '100vh'}}>
+            <Container maxWidth="lg" style={{height: '90vh'}}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
+                      <div className="header">
                         <Typography color="textSecondary" component="h1" variant="h1">Sorting
-                            Visualizer</Typography>
+                            Visualizer</Typography></div>
                     </Grid>
             <div className="array-container">
             {array.map((valuee,idx) => (
                 <div className="array-bar" key={idx}
                 style={{height: `${valuee}px` }}>
-                </div>
+            </div>
             ))}
             <div>
             <button   className="btn listItem" onClick={() => this.resetArray() }value="Create New Array">Create New Array</button>
@@ -140,23 +142,26 @@ export default class SortingVisualizer extends React.Component{
             {/* <button className="btn" onClick={() => this.testSortingAlgorithms()}> Test Sorting Algorithms </button> */}
             </div>
             <div>
-            <Slider
-                        className = "sliderr"
+            {/* <Slider
+                        className = " sliderr test"
                          //value={typeof numItems === 'number' ? numItems : 0}
                         onChange={(e, newValue) => this.updateNumberOfBars(newValue)}
                         aria-labelledby="input-slider"
                         valueLabelDisplay="auto"
-                        min={150}
+                        min={10}
                         max={229}
-                />  
+                />   */}
+                <div className="speed">
+                <h4>Adjust Speed of Execution </h4>
                 <Slider
-                        className = "sliderr"
+                        className = "sliderr test"
                         // value={typeof numItems === 'number' ? numItems : 0}
                         onChange={(e, newValue) => this.adjustSpeed(newValue)}
-                        aria-labelledby="input-slider"
-                        valueLabelDisplay="auto"
-                        max={100}
+                        valueLabelDisplay="on"
+                        max={20}
                 />
+                </div>
+                
             </div>
             </div>
             </Grid>
