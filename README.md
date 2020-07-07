@@ -1,3 +1,6 @@
+URL to the GH pages where the project is deployed :
+https://TBhagyashree.github.io/sorting-visualizer/
+
 
 ![sorting-visualizer-gif2](https://user-images.githubusercontent.com/55557033/86818542-22d86d00-c0a4-11ea-8f94-6128090f162c.gif)
 
