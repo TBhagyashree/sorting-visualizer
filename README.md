@@ -1,3 +1,7 @@
+
+![sorting-visualizer-gif2](https://user-images.githubusercontent.com/55557033/86818542-22d86d00-c0a4-11ea-8f94-6128090f162c.gif)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
